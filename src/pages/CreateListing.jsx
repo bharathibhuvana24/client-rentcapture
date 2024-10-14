@@ -98,26 +98,7 @@ export default function CreateListing() {
     });
   };
 
-  // const handleChange = (e) => {
-  //   if (e.target.id === 'brand' || e.target.id === 'model' || e.target.id === 'condition' || e.target.id === 'features' || e.target.id === 'price' || e.target.id === 'discountPrice') {
-  //     setFormData({
-  //       ...formData,
-  //       [e.target.id]: e.target.value,
-  //     });
-  //   }
-  //   if (e.target.type === 'date') {
-  //     setFormData({
-  //       ...formData,
-  //       [e.target.id]: e.target.value,
-  //     });
-  //   }
-  //   if (e.target.type === 'checkbox') {
-  //     setFormData({
-  //       ...formData,
-  //       [e.target.id]: e.target.checked,
-  //     });
-  //   }
-  // };
+ 
 
   const handleChange = (e) => {
     const { id, value, checked, type } = e.target;
@@ -140,7 +121,7 @@ const handleUpdateListing = async (e) => {
     setLoading(true);
     setError(false);
     const token = localStorage.getItem('authToken'); // Ensure token is included
-    const res = await axios.post('http://localhost:3000/api/listing/create', formData, {
+    const res = await axios.post('https://server-rentcapture.onrender.com/api/listing/create', formData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, // Include token in headers
@@ -160,7 +141,7 @@ const handleUpdateListing = async (e) => {
   }}
 
   const handlePayment = async () => {
-    const res = await axios.post('http://localhost:3000/api/create-payment-intent', {
+    const res = await axios.post('https://server-rentcapture.onrender.com/api/create-payment-intent', {
       amount: formData.price * 100,
     });
     const { clientSecret } = res.data;
