@@ -15,12 +15,8 @@ export default function Contact({ listing }) {
       try {
         const token = localStorage.getItem('authToken');
         console.log('Token in Contact Component:', token); // Log token
-<<<<<<< HEAD
         const res = await axios.get(`https://rentandcapture-backend.onrender.comapi/user/${listing.userRef}`, {
-=======
-        const res = await axios.get(`https://server-rentcapture.onrender.com/api/user/${listing.userRef}`, {
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
-          headers: {
+           headers: {
             'Authorization': `Bearer ${token}`, 
           },
         });

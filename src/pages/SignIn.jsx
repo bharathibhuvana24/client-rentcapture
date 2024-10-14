@@ -29,11 +29,7 @@ export default function SignIn() {
     try {
       setLoading(true); 
       dispatch(signInStart());
-<<<<<<< HEAD
       const res = await axios.post('https://rentandcapture-backend.onrender.comapi/auth/signin', formData);
-=======
-      const res = await axios.post('https://server-rentcapture.onrender.com/api/auth/signin', formData);
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
       const data = res.data;
       console.log('Received token:', data.token);  
   

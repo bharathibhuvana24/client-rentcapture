@@ -14,11 +14,7 @@ const CheckoutForm = ({ amount }) => {
     onSubmit: async () => {
       setLoading(true);
       try {
-<<<<<<< HEAD
         const { data } = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/create-order', { amount });
-=======
-        const { data } = await axios.post('https://server-rentcapture.onrender.com/api/payment/create-order', { amount });
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
         const options = {
           key: process.env.RAZORPAY_KEY_ID,
           amount: data.order.amount,
@@ -31,11 +27,7 @@ const CheckoutForm = ({ amount }) => {
               razorpay_payment_id,
               razorpay_signature,
             };
-<<<<<<< HEAD
             const result = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/verify-payment', verificationData);
-=======
-            const result = await axios.post('https://server-rentcapture.onrender.com/api/payment/verify-payment', verificationData);
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
             if (result.data.success) {
               navigate('/profile');
             } else {

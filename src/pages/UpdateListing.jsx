@@ -40,11 +40,7 @@ export default function UpdateListing() {
       try {
         setLoading(true);
         const token = localStorage.getItem('authToken');
-<<<<<<< HEAD
         const res = await axios.get(`https://rentandcapture-backend.onrender.comapi/listing/get/${listingId}`, {
-=======
-        const res = await axios.get(`https://server-rentcapture.onrender.com/api/listing/get/${listingId}`, {
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -137,11 +133,7 @@ export default function UpdateListing() {
     console.log('FormData before update:', formData);
     try {
       const token = localStorage.getItem('authToken');
-<<<<<<< HEAD
       const res = await axios.post(`https://rentandcapture-backend.onrender.comapi/listing/update/${listingId}`, formData, {
-=======
-      const res = await axios.post(`https://server-rentcapture.onrender.com/api/listing/update/${listingId}`, formData, {
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Include token in headers

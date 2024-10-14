@@ -6,11 +6,7 @@ const [dropDate, setDropDate] = useState(null);
 const [available, setAvailable] = useState(false);
 
 const checkAvailability = async () => {
-<<<<<<< HEAD
   const res = await axios.post('https://rentandcapture-backend.onrender.comapi/check-availability', { pickupDate, dropDate });
-=======
-  const res = await axios.post('https://server-rentcapture.onrender.com/api/check-availability', { pickupDate, dropDate });
->>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
   setAvailable(res.data.available);
 };
 
