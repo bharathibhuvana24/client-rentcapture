@@ -84,7 +84,7 @@ export default function Profile() {
       const token = localStorage.getItem('authToken'); // Retrieve token
       console.log('User updated successfully');
   
-      const res = await axios.post(`http://localhost:3000/api/user/update/${currentUser._id}`, formData, {
+      const res = await axios.post(`https://server-rentcapture.onrender.com/api/user/update/${currentUser._id}`, formData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Include token in headers
@@ -116,7 +116,7 @@ export default function Profile() {
       dispatch(deleteUserStart());
       const token = localStorage.getItem('authToken');
   
-      const res = await axios.delete(`http://localhost:3000/api/user/delete/${currentUser._id}`, {
+      const res = await axios.delete(`https://server-rentcapture.onrender.com/api/user/delete/${currentUser._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -151,7 +151,7 @@ export default function Profile() {
       const token = localStorage.getItem('authToken');
       console.log('Token before request:', token); // Log token
   
-      const res = await axios.post('http://localhost:3000/api/auth/signout', {}, {
+      const res = await axios.post('https://server-rentcapture.onrender.com/api/auth/signout', {}, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -182,7 +182,7 @@ export default function Profile() {
       setShowListingsError(false);
       const token = localStorage.getItem('authToken');
   
-      const res = await axios.get(`http://localhost:3000/api/user/listings/${currentUser._id}`, {
+      const res = await axios.get(`https://server-rentcapture.onrender.com/api/user/listings/${currentUser._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`, // Include token
         },
@@ -214,7 +214,7 @@ export default function Profile() {
   const handleListingDelete = async (listingId) => {
     try {
       const token = localStorage.getItem('authToken');
-      const res = await axios.delete(`http://localhost:3000/api/listing/delete/${listingId}`, {
+      const res = await axios.delete(`https://server-rentcapture.onrender.com/api/listing/delete/${listingId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
