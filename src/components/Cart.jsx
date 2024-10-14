@@ -42,7 +42,7 @@ export default function Cart() {
   const handlePayment = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/api/payment/create-order', { amount: totalPrice });
+      const res = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/create-order', { amount: totalPrice });
       const { order } = res.data;
       const options = {
         key: 'rzp_test_j3PdL6SrWabTCJ',
@@ -52,7 +52,7 @@ export default function Cart() {
         description: 'Transaction',
         order_id: order.id,
         handler: async (response) => {
-          const paymentResult = await axios.post('http://localhost:3000/api/payment/verify', response);
+          const paymentResult = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/verify', response);
           if (paymentResult.data.success) {
             alert('Payment successful!');
             localStorage.removeItem('cart');

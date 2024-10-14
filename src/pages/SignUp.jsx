@@ -22,7 +22,7 @@ const handleSubmit = async (e) => {
   try {
     setLoading(true);
     
-    const res = await axios.post('http://localhost:3000/api/auth/signup', formData, {
+    const res = await axios.post('https://rentandcapture-backend.onrender.comapi/auth/signup', formData, {
       headers: {
         'Content-Type': 'application/json',
       },

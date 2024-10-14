@@ -10,7 +10,7 @@ export default function Home() {
 
   const fetchOfferListings = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/listing/get?offer=true');
+      const res = await axios.get('https://rentandcapture-backend.onrender.comapi/listing/get?offer=true');
       const data = res.data;
       console.log('Offer Listings:', data);
 
@@ -25,7 +25,7 @@ export default function Home() {
 
   const fetchRentListings = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/listing/get?type=rent');
+      const res = await axios.get('https://rentandcapture-backend.onrender.comapi/listing/get?type=rent');
       const data = res.data;
       console.log('Rent Listings:', data);
 
