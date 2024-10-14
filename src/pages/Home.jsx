@@ -10,7 +10,11 @@ export default function Home() {
 
   const fetchOfferListings = async () => {
     try {
+<<<<<<< HEAD
       const res = await axios.get('https://rentandcapture-backend.onrender.comapi/listing/get?offer=true');
+=======
+      const res = await axios.get('https://server-rentcapture.onrender.com/api/listing/get?offer=true');
+>>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
       const data = res.data;
       console.log('Offer Listings:', data);
 
@@ -25,7 +29,11 @@ export default function Home() {
 
   const fetchRentListings = async () => {
     try {
+<<<<<<< HEAD
       const res = await axios.get('https://rentandcapture-backend.onrender.comapi/listing/get?type=rent');
+=======
+      const res = await axios.get('https://server-rentcapture.onrender.com/api/listing/get?type=rent');
+>>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
       const data = res.data;
       console.log('Rent Listings:', data);
 

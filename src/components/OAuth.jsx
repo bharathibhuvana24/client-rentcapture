@@ -16,7 +16,11 @@ export default function OAuth() {
 
       const result = await signInWithPopup(auth, provider);
 
+<<<<<<< HEAD
       const res = await axios.post('https://rentandcapture-backend.onrender.comapi/auth/google', {
+=======
+      const res = await axios.post('https://server-rentcapture.onrender.com/api/auth/google', {
+>>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
         name: result.user.displayName,
         email: result.user.email,
         photo: result.user.photoURL,

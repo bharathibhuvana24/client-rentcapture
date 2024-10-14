@@ -29,7 +29,11 @@ const [showPopup, setShowPopup] = useState(false);
         const token = localStorage.getItem('authToken'); 
         console.log('Auth Token:', token);
 
+<<<<<<< HEAD
         const res = await axios.get(`https://rentandcapture-backend.onrender.comapi/listing/get/${listingId}`, {
+=======
+        const res = await axios.get(`https://server-rentcapture.onrender.com/api/listing/get/${listingId}`, {
+>>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
           headers: {
             'Authorization': `Bearer ${token}`, 
           },

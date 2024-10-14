@@ -42,7 +42,11 @@ export default function Cart() {
   const handlePayment = async () => {
     setLoading(true);
     try {
+<<<<<<< HEAD
       const res = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/create-order', { amount: totalPrice });
+=======
+      const res = await axios.post('https://server-rentcapture.onrender.com/api/payment/create-order', { amount: totalPrice });
+>>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
       const { order } = res.data;
       const options = {
         key: 'rzp_test_j3PdL6SrWabTCJ',
@@ -52,7 +56,11 @@ export default function Cart() {
         description: 'Transaction',
         order_id: order.id,
         handler: async (response) => {
+<<<<<<< HEAD
           const paymentResult = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/verify', response);
+=======
+          const paymentResult = await axios.post('https://server-rentcapture.onrender.com/api/payment/verify', response);
+>>>>>>> b3c8682706269dbd6071b63afc908f49dea081d5
           if (paymentResult.data.success) {
             alert('Payment successful!');
             localStorage.removeItem('cart');
