@@ -9,9 +9,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.min.css';
-import 'swiper/swiper.min.css';
-
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper';
 
 
 const Listing = () => {
