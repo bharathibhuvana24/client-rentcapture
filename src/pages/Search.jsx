@@ -30,7 +30,7 @@ export default function Search() {
     urlParams.set('limit', limit);
 
     try {
-      const res = await axios.get(`https://rentandcapture-backend.onrender.comapi/listing/get?${urlParams.toString()}`);
+      const res = await axios.get(` https://rentandcapture-backend.onrender.com/api/listing/get?${urlParams.toString()}`);
       const data = res.data;
       if (data.success) {
         let sortedListings = data.listings;
@@ -66,7 +66,7 @@ export default function Search() {
     if (searchTerm) {
       const fetchSuggestions = async () => {
         try {
-          const res = await axios.get(`https://rentandcapture-backend.onrender.comapi/listing/autocomplete?searchTerm=${searchTerm}`);
+          const res = await axios.get(` https://rentandcapture-backend.onrender.com/api/listing/autocomplete?searchTerm=${searchTerm}`);
           setSuggestions(res.data.suggestions);
         } catch (error) {
           console.error('Error fetching suggestions:', error);

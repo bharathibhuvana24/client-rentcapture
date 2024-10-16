@@ -121,7 +121,7 @@ const handleUpdateListing = async (e) => {
     setLoading(true);
     setError(false);
     const token = localStorage.getItem('authToken'); // Ensure token is included
-    const res = await axios.post('https://rentandcapture-backend.onrender.comapi/listing/create', formData, {
+    const res = await axios.post(' https://rentandcapture-backend.onrender.com/api/listing/create', formData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, // Include token in headers
@@ -141,7 +141,7 @@ const handleUpdateListing = async (e) => {
   }}
 
   const handlePayment = async () => {
-    const res = await axios.post('https://rentandcapture-backend.onrender.comapi/create-payment-intent', {
+    const res = await axios.post(' https://rentandcapture-backend.onrender.com/api/create-payment-intent', {
       amount: formData.price * 100,
     });
     const { clientSecret } = res.data;

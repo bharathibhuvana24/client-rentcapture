@@ -22,7 +22,7 @@ const handleSubmit = async (e) => {
   try {
     setLoading(true);
     
-    const res = await axios.post('https://rentandcapture-backend.onrender.comapi/auth/signup', formData, {
+    const res = await axios.post(' https://rentandcapture-backend.onrender.com/api/auth/signup', formData, {
       headers: {
         'Content-Type': 'application/json',
       },

@@ -43,7 +43,7 @@ export default function Cart() {
     setLoading(true);
     try {
 
-      const res = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/create-order', { amount: totalPrice });
+      const res = await axios.post(' https://rentandcapture-backend.onrender.com/api/payment/create-order', { amount: totalPrice });
 
       const { order } = res.data;
       const options = {
@@ -54,7 +54,7 @@ export default function Cart() {
         description: 'Transaction',
         order_id: order.id,
         handler: async (response) => {
-          const paymentResult = await axios.post('https://rentandcapture-backend.onrender.comapi/payment/verify', response);
+          const paymentResult = await axios.post(' https://rentandcapture-backend.onrender.com/api/payment/verify', response);
           if (paymentResult.data.success) {
             alert('Payment successful!');
             localStorage.removeItem('cart');
