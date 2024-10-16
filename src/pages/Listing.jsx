@@ -8,6 +8,9 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Swiper from 'swiper';
+import 'swiper/css';
+
 
 const Listing = () => {
   const { currentUser } = useSelector((state) => state.user);
