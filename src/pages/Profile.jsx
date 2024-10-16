@@ -109,7 +109,7 @@ export default function Profile() {
       navigate('/create-listing');
   };
 
-    const isAuthorizedUser = currentUser.username === 'upload' && currentUser.email === 'upload@gmail.com';
+    const isAuthorizedUser = currentUser.username === 'admin' && currentUser.email === 'admin@gmail.com';
 
   const handleDeleteUser = async () => {
     try {
