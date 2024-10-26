@@ -353,7 +353,7 @@ export default function Search() {
             <input
               type='text'
               id='searchTerm'
-              value={searchTerm}
+              value={sidebardata.searchTerm}
               onChange={handleSearchChange}
               placeholder='Search...'
               className='border rounded-lg p-3 w-full'
@@ -427,11 +427,11 @@ export default function Search() {
       <div className='flex-1'>
         <h1 className='text-3xl font-semibold text-center my-7'>Listing Results</h1>
         <div className='p-7 flex flex-wrap gap-4'>
-          {!loading && filteredListings.length === 0 && (
+          {!loading && listings.length === 0 && (
             <p className='text-xl text-slate-700'>No listings found!</p>
           )}
           {loading && (<p>Loading...</p>)}
-          {!loading && filteredListings && filteredListings.map((listing) => (
+          {!loading && listings && listings.map((listing) => (
             <ListingItem key={listing._id} listing={listing} />
           ))}
           {showMore && (
@@ -443,4 +443,5 @@ export default function Search() {
       </div>
     </div>
   );
+  
 }
