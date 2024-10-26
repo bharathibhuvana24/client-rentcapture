@@ -296,7 +296,7 @@ export default function Search() {
           setSuggestions([]);
         }
       }
-     },
+     }
      }, [searchTerm]);
 
   const handleSearchChange = (e) => {
