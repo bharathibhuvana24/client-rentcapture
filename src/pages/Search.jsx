@@ -292,14 +292,12 @@ export default function Search() {
           const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/listing/autocomplete?searchTerm=${searchTerm}`);
           setSuggestions(res.data.suggestions);
         } catch (error) {
-          console.error('Error fetching suggestions:', error);
+          console.error('Error fetching suggestions:', error.message);
+          setSuggestions([]);
         }
-      };
-      fetchSuggestions();
-    } else {
-      setSuggestions([]);
-    }
-  }, [searchTerm]);
+      }
+     },
+     }, [searchTerm]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
