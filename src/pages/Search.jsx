@@ -48,6 +48,7 @@ export default function Search() {
             return sortOrder === 'createdAt_asc' ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
           });
         }
+        console.log("Fetched Listings:", sortedListings); // Debugging log
         setListings(startIndex === 0 ? sortedListings : [...listings, ...sortedListings]);
         setShowMore(data.listings.length === limit);
       } else {
@@ -60,7 +61,7 @@ export default function Search() {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, [location.search, startIndex, sortOrder]);
