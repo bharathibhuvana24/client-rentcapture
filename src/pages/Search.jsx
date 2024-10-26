@@ -209,7 +209,7 @@ return (
           <p className='text-xl text-slate-700'>Please <Link to={'/sign-in'}> signin </Link> to view Listings!!</p>
         )}
         {loading && (<p>Loading...</p>)}
-        {!loading && filteredListings && filteredListings.map((listing) => (
+        {!loading && filteredListings.map((listing) => (
           <ListingItem key={listing._id} listing={listing} />
         ))}
         {showMore && (
