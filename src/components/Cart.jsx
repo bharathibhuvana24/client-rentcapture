@@ -18,16 +18,19 @@ export default function Cart() {
       try {
         const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${userId}`);
         const { cart } = res.data;
-        if (cart) {
-          setCartItems(cart.items || []);
-          calculateTotalPrice(cart.items || []);
+        console.log('Fetched Cart:', cart); // Debug log
+        if (cart && cart.items) {
+          setCartItems(cart.items);
+          calculateTotalPrice(cart.items);
+        } else {
+          setCartItems([]);
         }
       } catch (error) {
         console.error('Error fetching cart:', error);
       }
     };
     fetchCart();
-  }, [navigate]);
+  }, []);
 
   const calculateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
