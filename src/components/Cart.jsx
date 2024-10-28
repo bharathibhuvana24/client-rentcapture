@@ -1,11 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux'; // Ensure you have access to currentUser
 import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
-  const { currentUser } = useSelector((state) => state.user);
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -13,17 +10,24 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (!currentUser || !currentUser._id) {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
         navigate('/login');
         return;
       }
-      const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${currentUser._id}`);
-      const { cart } = res.data;
-      setCartItems(cart.items);
-      calculateTotalPrice(cart.items);
+      try {
+        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${userId}`);
+        const { cart } = res.data;
+        if (cart) {
+          setCartItems(cart.items || []);
+          calculateTotalPrice(cart.items || []);
+        }
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
     };
     fetchCart();
-  }, [currentUser]);
+  }, [navigate]);
 
   const calculateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
@@ -38,14 +42,14 @@ export default function Cart() {
     }
     setCartItems(updatedItems);
     calculateTotalPrice(updatedItems);
-    axios.post('https://rentandcapture-backend.onrender.com/api/cart/update', { userId: currentUser._id, items: updatedItems });
+    axios.post('https://rentandcapture-backend.onrender.com/api/cart/update', { userId: localStorage.getItem('userId'), items: updatedItems });
   };
 
   const handleRemoveItem = (index) => {
     const updatedItems = cartItems.filter((item, i) => i !== index);
     setCartItems(updatedItems);
     calculateTotalPrice(updatedItems);
-    axios.post('https://rentandcapture-backend.onrender.com/api/cart/update', { userId: currentUser._id, items: updatedItems });
+    axios.post('https://rentandcapture-backend.onrender.com/api/cart/update', { userId: localStorage.getItem('userId'), items: updatedItems });
   };
 
   const handlePayment = async () => {
@@ -64,7 +68,7 @@ export default function Cart() {
           const paymentResult = await axios.post('https://rentandcapture-backend.onrender.com/api/payment/verify', response);
           if (paymentResult.data.success) {
             alert('Payment successful!');
-            await axios.post('https://rentandcapture-backend.onrender.com/api/cart/clear', { userId: currentUser._id });
+            await axios.post('https://rentandcapture-backend.onrender.com/api/cart/clear', { userId: localStorage.getItem('userId') });
             setCartItems([]);
             setTotalPrice(0);
           } else {
@@ -90,9 +94,9 @@ export default function Cart() {
     } finally {
       setLoading(false);
     }
-      };
-      
-      return (
+  };
+
+  return (
     <div className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Cart</h1>
       <div className='flex flex-col gap-4'>
