@@ -12,13 +12,12 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchCart = async () => {
-      const userId = currentUser._id;
-      if (!userId) {
+      if (!currentUser || !currentUser._id) {
         navigate('/login');
         return;
       }
       try {
-        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${userId}`); // Updated URL
+        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
         const { cart } = res.data;
         console.log('Fetched Cart:', cart); // Log cart data
         setCartItems(cart?.items || []); // Safe access to items
@@ -29,8 +28,7 @@ export default function Cart() {
     };
     fetchCart();
   }, [currentUser, navigate]);
-  
- 
+
   const calculateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
     setTotalPrice(total);
@@ -97,6 +95,7 @@ export default function Cart() {
       setLoading(false);
     }
   };
+
   return (
     <div className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Cart</h1>
@@ -149,4 +148,4 @@ export default function Cart() {
       </div>
     </div>
   );
-}  
+}
