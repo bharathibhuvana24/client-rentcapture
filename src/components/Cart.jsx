@@ -97,7 +97,6 @@ export default function Cart() {
       setLoading(false);
     }
   };
-
   return (
     <div className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Cart</h1>
@@ -150,4 +149,4 @@ export default function Cart() {
       </div>
     </div>
   );
-}
+}  
