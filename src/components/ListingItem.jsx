@@ -28,10 +28,7 @@ export default function ListingItem({ listing }) {
             <div className='font-bold text-xs'>
               Model: {listing.model}
             </div>
-            
-            <div className='font-bold text-xs'>
-              Available: {listing.available ? 'Yes' : 'No'}
-            </div>
+
            
           </div>
         </div>

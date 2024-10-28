@@ -83,12 +83,17 @@ export default function Search() {
     }
   }, [searchTerm]);
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
 
-  const handleSelectSuggestion = (suggestion) => {
+  const handleSearchChange = (e) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+    setSidebardata((prevData) => ({ ...prevData, searchTerm: value }));
+  };
+  
+
+  const handleSearchSelect = (suggestion) => {
     setSearchTerm(suggestion);
+    setSidebardata((prevData) => ({ ...prevData, searchTerm: suggestion }));
     setSuggestions([]);
     navigate(`/search?searchTerm=${suggestion}`);
   };
@@ -133,22 +138,29 @@ export default function Search() {
           <div className='flex items-center gap-2'>
             <label className='whitespace-nowrap font-semibold'>Search Term:</label>
             <input
-              type='text'
-              id='searchTerm'
-              value={sidebardata.searchTerm}
-              onChange={handleSearchChange}
-              placeholder='Search...'
-              className='border rounded-lg p-3 w-full'
-            />
+  type='text'
+  id='searchTerm'
+  value={searchTerm}
+  onChange={handleSearchChange}
+  placeholder='Search...'
+  className='border rounded-lg p-3 w-full'
+/>
+
             {suggestions.length > 0 && (
-              <ul className='suggestions-list'>
-                {suggestions.map((suggestion, index) => (
-                  <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            )}
+                <ul className='absolute bg-white border mt-2 w-full rounded-lg'>
+                  {suggestions.map((suggestion) => (
+                    <li
+                      key={suggestion._id}
+                      onClick={() => handleSearchSelect(suggestion.name)}
+                      className='p-2 cursor-pointer hover:bg-gray-200'
+                    >
+                      {suggestion.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            
+            
           </div>
           <div className='flex items-center gap-2'>
             <label className='font-semibold'>Sort:</label>
