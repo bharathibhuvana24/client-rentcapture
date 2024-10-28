@@ -10,7 +10,6 @@ export default function Cart() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchCart = async () => {
          if (!currentUser || !currentUser._id) {
