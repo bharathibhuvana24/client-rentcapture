@@ -13,7 +13,7 @@ export default function Cart() {
   useEffect(() => {
     const fetchCart = async () => {
       if (!currentUser || !currentUser._id) {
-        navigate('/login');
+        navigate('/sign-in');
         return;
       }
       try {
