@@ -143,7 +143,7 @@ export default function Search() {
   value={searchTerm}
   onChange={handleSearchChange}
   placeholder='Search...'
-  className='border rounded-lg p-3 w-full'
+  className='border rounded-lg p-3 w-1/4'
 />
 
             {suggestions.length > 0 && (
