@@ -13,11 +13,11 @@ export default function Cart() {
   useEffect(() => {
     const fetchCart = async () => {
       if (!currentUser || !currentUser._id) {
-        navigate('/sign-in');
+        navigate('/login');
         return;
       }
       try {
-        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${currentUser._id}`);
+        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
         const { cart } = res.data;
         console.log('Fetched Cart:', cart);
         setCartItems(cart?.items || []);
@@ -42,14 +42,14 @@ export default function Cart() {
     }
     setCartItems(updatedItems);
     calculateTotalPrice(updatedItems);
-    axios.post('https://rentandcapture-backend.onrender.com/api/cart/update', { userId: currentUser._id, items: updatedItems });
+    axios.post(`https://rentandcapture-backend.onrender.com/api/cart/update/${currentUser._id}`, { items: updatedItems });
   };
 
   const handleRemoveItem = (index) => {
     const updatedItems = cartItems.filter((item, i) => i !== index);
     setCartItems(updatedItems);
     calculateTotalPrice(updatedItems);
-    axios.post('https://rentandcapture-backend.onrender.com/api/cart/update', { userId: currentUser._id, items: updatedItems });
+    axios.post(`https://rentandcapture-backend.onrender.com/api/cart/update/${currentUser._id}`, { items: updatedItems });
   };
 
   const handlePayment = async () => {
@@ -68,7 +68,7 @@ export default function Cart() {
           const paymentResult = await axios.post('https://rentandcapture-backend.onrender.com/api/payment/verify', response);
           if (paymentResult.data.success) {
             alert('Payment successful!');
-            await axios.post('https://rentandcapture-backend.onrender.com/api/cart/clear', { userId: currentUser._id });
+            await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/clear/${currentUser._id}`);
             setCartItems([]);
             setTotalPrice(0);
           } else {
