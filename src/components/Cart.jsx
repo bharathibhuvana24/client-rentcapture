@@ -10,7 +10,7 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchCart = async () => {
-      const userId = localStorage.getItem('userId');
+      const userId = currentUser._id;
       if (!userId) {
         navigate('/login');
         return;
@@ -18,19 +18,16 @@ export default function Cart() {
       try {
         const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${userId}`);
         const { cart } = res.data;
-        console.log('Fetched Cart:', cart); // Debug log
-        if (cart && cart.items) {
-          setCartItems(cart.items);
-          calculateTotalPrice(cart.items);
-        } else {
-          setCartItems([]);
-        }
+        console.log('Fetched Cart:', cart); // Log cart data
+        setCartItems(cart.items);
+        calculateTotalPrice(cart.items);
       } catch (error) {
         console.error('Error fetching cart:', error);
       }
     };
     fetchCart();
-  }, []);
+  }, [currentUser]);
+  
 
   const calculateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
