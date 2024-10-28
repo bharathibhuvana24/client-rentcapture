@@ -18,7 +18,7 @@ export default function Cart() {
         return;
       }
       try {
-        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${userId}`);
+        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${userId}`); // Updated URL
         const { cart } = res.data;
         console.log('Fetched Cart:', cart); // Log cart data
         setCartItems(cart?.items || []); // Safe access to items
