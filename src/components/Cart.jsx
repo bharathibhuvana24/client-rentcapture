@@ -17,11 +17,11 @@ export default function Cart() {
         return;
       }
       try {
-        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
+        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart?userId=${currentUser._id}`);
         const { cart } = res.data;
-        console.log('Fetched Cart:', cart); // Log cart data
-        setCartItems(cart?.items || []); // Safe access to items
-        calculateTotalPrice(cart?.items || []); // Safe access to items
+        console.log('Fetched Cart:', cart);
+        setCartItems(cart?.items || []);
+        calculateTotalPrice(cart?.items || []);
       } catch (error) {
         console.error('Error fetching cart:', error);
       }
