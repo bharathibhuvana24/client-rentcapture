@@ -160,7 +160,7 @@ export default function Search() {
                   ))}
                 </ul>
               )}
-            
+            </div>
             
           </div>
           <div className='flex items-center gap-2'>
@@ -174,7 +174,7 @@ export default function Search() {
               <option value='price_desc'>Price high to low</option>
               <option value='price_asc'>Price low to high</option>
             </select>
-            </div>
+            
           </div>
           <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95'>
             Search

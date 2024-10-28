@@ -61,24 +61,38 @@ const [showPopup, setShowPopup] = useState(false);
   const isDateAvailable = (date) => {
     const pickupDate = new Date(listing.pickupDate);
     const dropDate = new Date(listing.dropDate);
-    return date >= pickupDate && date <= dropDate;
+  
+    // Check if the date falls within the listing's available date range
+    if (date < pickupDate || date > dropDate) {
+      return false;
+    }
+  
+    // Check if the date overlaps with any booked dates
+    for (let booked of listing.bookedDates) {
+      const bookedStart = new Date(booked.start);
+      const bookedEnd = new Date(booked.end);
+      if (date >= bookedStart && date <= bookedEnd) {
+        return false;
+      }
+    }
+    
+    return true;
   };
-
+  
   useEffect(() => {
     if (pickupDate && dropDate) {
       const timeDiff = new Date(dropDate).getTime() - new Date(pickupDate).getTime();
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
       const pricePerDay = listing.offer ? listing.discountPrice : listing.price;
       const calculatedTotalPrice = days * pricePerDay;
-      
-      // Log prices to console
+  
       console.log(`Price per day: ${pricePerDay}`);
       console.log(`Total price for ${days} days: ${calculatedTotalPrice}`);
-      
+  
       setTotalPrice(calculatedTotalPrice);
     }
   }, [pickupDate, dropDate, listing]);
-
+  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Something went wrong!</div>;
 
@@ -159,26 +173,23 @@ const [showPopup, setShowPopup] = useState(false);
               <span className='font-semibold text-black'>What is included in this rental? </span>
               {listing.features || 'N/A'}
             </p>
-            <p className='text-slate-800'>
-              <span className='font-semibold text-black'>Available Dates: </span>
-              {`Pickup: ${new Date(listing.pickupDate).toLocaleDateString()} - Drop: ${new Date(listing.dropDate).toLocaleDateString()}`}
-            </p>
-
+           
             <div className='flex gap-4'>
-              <DatePicker 
-                selected={pickupDate} 
-                onChange={(date) => setPickupDate(date)} 
-                placeholderText="Select Pickup Date" 
-                className='p-3 border border-gray-300 rounded-lg'
-                filterDate={isDateAvailable}
-              />
-              <DatePicker 
-                selected={dropDate} 
-                onChange={(date) => setDropDate(date)} 
-                placeholderText="Select Drop Date" 
-                className='p-3 border border-gray-300 rounded-lg'
-                filterDate={isDateAvailable}
-              />
+      <DatePicker
+        selected={pickupDate}
+        onChange={(date) => setPickupDate(date)}
+        placeholderText="Select Pickup Date"
+        className='p-3 border border-gray-300 rounded-lg'
+        filterDate={isDateAvailable}
+      />
+      <DatePicker
+        selected={dropDate}
+        onChange={(date) => setDropDate(date)}
+        placeholderText="Select Drop Date"
+        className='p-3 border border-gray-300 rounded-lg'
+        filterDate={isDateAvailable}
+      />
+    
             </div>
             
             <p>Total Price: ${totalPrice}</p>
