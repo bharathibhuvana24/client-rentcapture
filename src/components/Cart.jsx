@@ -10,24 +10,31 @@ export default function Cart() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchCart = async () => {
+  //     if (!currentUser || !currentUser._id) {
+  //       navigate('/sign-in');
+  //       return;
+  //     }
+  //     try {
+  //       const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
+  //       const { cart } = res.data;
+  //       console.log('Fetched Cart:', cart);
+  //       setCartItems(cart?.items || []);
+  //       calculateTotalPrice(cart?.items || []);
+  //     } catch (error) {
+  //       console.error('Error fetching cart:', error);
+  //     }
+  //   };
+  //   fetchCart();
+  // }, [currentUser, navigate]);
+
   useEffect(() => {
-    const fetchCart = async () => {
-      if (!currentUser || !currentUser._id) {
-        navigate('/login');
-        return;
-      }
-      try {
-        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
-        const { cart } = res.data;
-        console.log('Fetched Cart:', cart);
-        setCartItems(cart?.items || []);
-        calculateTotalPrice(cart?.items || []);
-      } catch (error) {
-        console.error('Error fetching cart:', error);
-      }
-    };
-    fetchCart();
-  }, [currentUser, navigate]);
+       const items = JSON.parse(localStorage.getItem('cart')) || [];
+      const updatedItems = items.map(item => ({ ...item, quantity: item.quantity || 1 }));
+       setCartItems(updatedItems);
+         calculateTotalPrice(updatedItems);
+     }, []);
 
   const calculateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
