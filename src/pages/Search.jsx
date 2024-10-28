@@ -135,15 +135,16 @@ export default function Search() {
     <div className='flex flex-col md:flex-row'>
       <div className='p-7 border-b-2 md:border-r-2 md:min-h-screen'>
         <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 relative'>
             <label className='whitespace-nowrap font-semibold'>Search Term:</label>
+            <div className='relative w-full'>
             <input
   type='text'
   id='searchTerm'
   value={searchTerm}
   onChange={handleSearchChange}
   placeholder='Search...'
-  className='border rounded-lg p-3 w-1/4'
+  className='border rounded-lg p-3 w-full'
 />
 
             {suggestions.length > 0 && (
@@ -173,6 +174,7 @@ export default function Search() {
               <option value='price_desc'>Price high to low</option>
               <option value='price_asc'>Price low to high</option>
             </select>
+            </div>
           </div>
           <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95'>
             Search
