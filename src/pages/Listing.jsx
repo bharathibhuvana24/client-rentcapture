@@ -51,14 +51,15 @@ const Listing = () => {
     if (!listing || !listing.bookedDates) {
       return true;
     }
-    for (let booked of listing.bookedDates) {
-      const bookedStart = new Date(booked.start);
-      const bookedEnd = new Date(booked.end);
-      if (date >= bookedStart && date <= bookedEnd) {
-        return false;
+
+    const totalBooked = listing.bookedDates.reduce((total, booking) => {
+      if (date >= new Date(booking.start) && date <= new Date(booking.end)) {
+        return total + booking.quantity;
       }
-    }
-    return true;
+      return total;
+    }, 0);
+
+    return totalBooked < listing.stock;
   };
 
   useEffect(() => {
