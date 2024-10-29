@@ -8,6 +8,7 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,7 +78,7 @@ export default function Cart() {
         handler: async (response) => {
           const paymentResult = await axios.post('https://rentandcapture-backend.onrender.com/api/payment/verify', response);
           if (paymentResult.data.success) {
-            alert('Payment successful!');
+            setPaymentSuccess(true);
             await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/clear/${currentUser._id}`);
             setCartItems([]);
             setTotalPrice(0);
@@ -110,49 +111,68 @@ export default function Cart() {
     <div className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Cart</h1>
       <div className='flex flex-col gap-4'>
-        {cartItems.length === 0 ? (
-          <p>Your cart is empty.</p>
-        ) : (
-          cartItems.map((item, index) => (
-            <div key={index} className='border rounded-lg p-3 flex justify-between items-center gap-4'>
-              <div className='flex items-center gap-4'>
-                <img src={item.imageUrl} alt='listing cover' className='h-16 w-16 object-contain' />
-                <div className='flex flex-col flex-1'>
-                  <p className='text-lg font-semibold'>{item.name}</p>
-                  <p>From {item.pickupDate} to {item.dropDate}</p>
-                  <p>Price: ${item.totalPrice}</p>
-                </div>
-              </div>
-              <div className='flex items-center gap-2'>
-                <button
-                  onClick={() => handleQuantityChange(index, -1)}
-                  className='p-3 bg-red-500 text-white rounded'
-                >
-                  -
-                </button>
-                <span><button className='p-2'>{item.quantity}</button></span>
-                <button
-                  onClick={() => handleQuantityChange(index, 1)}
-                  className='p-3 bg-green-500 text-white rounded'
-                >
-                  +
-                </button>
-                <button
-                  onClick={() => handleRemoveItem(index)}
-                  className='p-2 bg-red-500 text-white rounded ml-4'
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-        {cartItems.length > 0 && (
-          <>
-            <p className='text-xl font-semibold'>Total Price: Rs.{totalPrice}</p>
-            <button onClick={handlePayment} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95' disabled={loading}>
-              {loading ? 'Processing...' : 'Pay Now'}
+        {paymentSuccess ? (
+          <div className='text-center'>
+            <h2 className='text-2xl font-semibold'>Thank You!</h2>
+            <p>Your order has been successfully placed.</p>
+            <button
+              onClick={() => navigate('/search')}
+              className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 mt-4'
+            >
+              Shop More
             </button>
+          </div>
+        ) : (
+          <>
+            {cartItems.length === 0 ? (
+              <p>Your cart is empty.</p>
+            ) : (
+              cartItems.map((item, index) => (
+                <div key={index} className='border rounded-lg p-3 flex justify-between items-center gap-4'>
+                  <div className='flex items-center gap-4'>
+                    <img src={item.imageUrl} alt='listing cover' className='h-16 w-16 object-contain' />
+                    <div className='flex flex-col flex-1'>
+                      <p className='text-lg font-semibold'>{item.name}</p>
+                      <p>From {item.pickupDate} to {item.dropDate}</p>
+                      <p>Price: ${item.totalPrice}</p>
+                    </div>
+                  </div>
+                  <div className='flex items-center gap-2'>
+                    <button
+                      onClick={() => handleQuantityChange(index, -1)}
+                      className='p-3 bg-red-500 text-white rounded'
+                    >
+                      -
+                    </button>
+                    <span><button className='p-2'>{item.quantity}</button></span>
+                    <button
+                      onClick={() => handleQuantityChange(index, 1)}
+                      className='p-3 bg-green-500 text-white rounded'
+                    >
+                      +
+                    </button>
+                    <button
+                      onClick={() => handleRemoveItem(index)}
+                      className='p-2 bg-red-500 text-white rounded ml-4'
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+            {cartItems.length > 0 && (
+              <>
+                <p className='text-xl font-semibold'>Total Price: Rs.{totalPrice}</p>
+                <button
+                  onClick={handlePayment}
+                  className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95'
+                  disabled={loading}
+                >
+                  {loading ? 'Processing...' : 'Pay Now'}
+                </button>
+              </>
+            )}
           </>
         )}
       </div>
