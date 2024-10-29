@@ -97,19 +97,19 @@ const [showPopup, setShowPopup] = useState(false);
   if (error) return <div>Something went wrong!</div>;
 
   const handleAddToCart = async () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const item = {
+      userId: currentUser._id,
       imageUrl: listing.imageUrls[0],
       name: listing.name,
       pickupDate: new Date(pickupDate).toLocaleDateString(),
       dropDate: new Date(dropDate).toLocaleDateString(),
       totalPrice,
+      quantity: 1 // Assuming default quantity to be 1
     };
-    cart.push(item);
-    localStorage.setItem('cart', JSON.stringify(cart));
   
     try {
-      await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/add/${currentUser._id}`, item);
+      const res = await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/add/${currentUser._id}`, item);
+      console.log('Added Item to Cart:', res.data.cart); // Log added item
       setShowPopup(true);
       setTimeout(() => {
         setShowPopup(false);
