@@ -96,7 +96,7 @@ const [showPopup, setShowPopup] = useState(false);
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Something went wrong!</div>;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const item = {
       imageUrl: listing.imageUrls[0],
@@ -107,14 +107,19 @@ const [showPopup, setShowPopup] = useState(false);
     };
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart));
-    
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-      navigate('/cart');
-    }, 2000);
+  
+    try {
+      await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/add/${currentUser._id}`, item);
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        navigate('/cart');
+      }, 2000);
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+    }
   };
-
+  
   return (
     <main>
       {listing && (

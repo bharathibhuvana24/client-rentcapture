@@ -12,31 +12,29 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchCart = async () => {
-         if (!currentUser || !currentUser._id) {
-           navigate('/sign-in');
-            return;
-           }
-           try {
-            const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
-            const { cart } = res.data;
-            console.log('Fetched Cart:', cart);
-            setCartItems(cart?.items || []);
-            calculateTotalPrice(cart?.items || []);
-          } catch (error) {
-            console.error('Error fetching cart:', error);
-          }
-        };
-        fetchCart();
-      }, [currentUser, navigate]);
-       
-      
-      
+      if (!currentUser || !currentUser._id) {
+        navigate('/sign-in');
+        return;
+      }
+      try {
+        const res = await axios.get(`https://rentandcapture-backend.onrender.com/api/cart/${currentUser._id}`);
+        const { cart } = res.data;
+        console.log('Fetched Cart:', cart);
+        setCartItems(cart?.items || []);
+        calculateTotalPrice(cart?.items || []);
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+    fetchCart();
+  }, [currentUser, navigate]);
+
   const calculateTotalPrice = (items) => {
     const total = items.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
     setTotalPrice(total);
   };
 
-  const handleQuantityChange = (index, delta) => {
+  const handleQuantityChange = async (index, delta) => {
     const updatedItems = [...cartItems];
     updatedItems[index].quantity += delta;
     if (updatedItems[index].quantity < 1) {
@@ -44,14 +42,24 @@ export default function Cart() {
     }
     setCartItems(updatedItems);
     calculateTotalPrice(updatedItems);
-    axios.post(`https://rentandcapture-backend.onrender.com/api/cart/update/${currentUser._id}`, { items: updatedItems });
+    try {
+      const res = await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/update/${currentUser._id}`, { items: updatedItems });
+      console.log('Updated Cart:', res.data.cart);
+    } catch (error) {
+      console.error('Error updating cart:', error);
+    }
   };
 
-  const handleRemoveItem = (index) => {
+  const handleRemoveItem = async (index) => {
     const updatedItems = cartItems.filter((item, i) => i !== index);
     setCartItems(updatedItems);
     calculateTotalPrice(updatedItems);
-    axios.post(`https://rentandcapture-backend.onrender.com/api/cart/update/${currentUser._id}`, { items: updatedItems });
+    try {
+      const res = await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/update/${currentUser._id}`, { items: updatedItems });
+      console.log('Updated Cart:', res.data.cart);
+    } catch (error) {
+      console.error('Error updating cart:', error);
+    }
   };
 
   const handlePayment = async () => {
