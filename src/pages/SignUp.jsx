@@ -77,7 +77,7 @@ const handleSubmit = async (e) => {
         >
           {loading ? 'Loading...' : 'Sign Up'}
         </button>
-        <OAuth />
+  
       </form>
 
       <div className="flex gap-2 mt-5">
