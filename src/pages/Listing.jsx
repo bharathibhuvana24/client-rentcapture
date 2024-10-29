@@ -95,14 +95,14 @@ const [showPopup, setShowPopup] = useState(false);
   
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Something went wrong!</div>;
-
   const handleAddToCart = async () => {
     const item = {
+      productId: listing._id, // Assuming `listing._id` is the product ID
       userId: currentUser._id,
       imageUrl: listing.imageUrls[0],
       name: listing.name,
-      pickupDate: new Date(pickupDate).toLocaleDateString(),
-      dropDate: new Date(dropDate).toLocaleDateString(),
+      pickupDate: new Date(pickupDate).toISOString(), // Ensure ISO string format
+      dropDate: new Date(dropDate).toISOString(), // Ensure ISO string format
       totalPrice,
       quantity: 1 // Assuming default quantity to be 1
     };
@@ -119,6 +119,7 @@ const [showPopup, setShowPopup] = useState(false);
       console.error('Error adding item to cart:', error);
     }
   };
+  
   
   return (
     <main>
