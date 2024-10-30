@@ -9,6 +9,7 @@ export default function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,10 +79,20 @@ export default function Cart() {
         handler: async (response) => {
           const paymentResult = await axios.post('https://rentandcapture-backend.onrender.com/api/payment/verify', response);
           if (paymentResult.data.success) {
-            setPaymentSuccess(true);
-            await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/clear/${currentUser._id}`);
-            setCartItems([]);
-            setTotalPrice(0);
+            const clearedCartResponse = await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/clear/${currentUser._id}`);
+            if (clearedCartResponse.data.success) {
+              setPaymentSuccess(true);
+              setOrderDetails({
+                orderId: order.id,
+                pickupDate: cartItems[0].pickupDate,
+                dropDate: cartItems[0].dropDate,
+                totalPrice: totalPrice,
+              });
+              setCartItems([]);
+              setTotalPrice(0);
+            } else {
+              console.error('Error clearing cart:', clearedCartResponse.data.message);
+            }
           } else {
             alert('Payment verification failed!');
           }
@@ -105,8 +116,8 @@ export default function Cart() {
     } finally {
       setLoading(false);
     }
+  
   };
-
   return (
     <div className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Cart</h1>
@@ -115,6 +126,14 @@ export default function Cart() {
           <div className='text-center'>
             <h2 className='text-2xl font-semibold'>Thank You!</h2>
             <p>Your order has been successfully placed.</p>
+            {orderDetails && (
+              <div className='mt-4'>
+                <p><strong>Order ID:</strong> {orderDetails.orderId}</p>
+                <p><strong>Pickup Date:</strong> {new Date(orderDetails.pickupDate).toLocaleDateString()}</p>
+                <p><strong>Drop Date:</strong> {new Date(orderDetails.dropDate).toLocaleDateString()}</p>
+                <p><strong>Total Price:</strong> ${orderDetails.totalPrice}</p>
+              </div>
+            )}
             <button
               onClick={() => navigate('/search')}
               className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 mt-4'
@@ -133,7 +152,7 @@ export default function Cart() {
                     <img src={item.imageUrl} alt='listing cover' className='h-16 w-16 object-contain' />
                     <div className='flex flex-col flex-1'>
                       <p className='text-lg font-semibold'>{item.name}</p>
-                      <p>From {item.pickupDate} to {item.dropDate}</p>
+                      <p>From {new Date(item.pickupDate).toLocaleDateString()} to {new Date(item.dropDate).toLocaleDateString()}</p>
                       <p>Price: ${item.totalPrice}</p>
                     </div>
                   </div>
@@ -163,7 +182,7 @@ export default function Cart() {
             )}
             {cartItems.length > 0 && (
               <>
-                <p className='text-xl font-semibold'>Total Price: Rs.{totalPrice}</p>
+                <p className='text-xl font-semibold'>Total Price: ${totalPrice}</p>
                 <button
                   onClick={handlePayment}
                   className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95'
@@ -178,4 +197,4 @@ export default function Cart() {
       </div>
     </div>
   );
-}
+}  
