@@ -59,7 +59,7 @@ const Listing = () => {
       return total;
     }, 0);
 
-    return totalBooked < listing.stock;
+    return totalBooked < listing.stock && date >= new Date(); // Prevent past dates
   };
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const Listing = () => {
       console.error('Error adding item to cart:', error);
     }
   };
-  
+
   return (
     <main>
       {listing && (
