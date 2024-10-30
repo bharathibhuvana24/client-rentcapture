@@ -98,7 +98,7 @@ const Listing = () => {
       console.error('Error adding item to cart:', error);
     }
   };
-
+  
   return (
     <main>
       {listing && (
