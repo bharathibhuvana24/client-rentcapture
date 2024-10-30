@@ -17,6 +17,7 @@ export default function UpdateListing() {
   const params = useParams();
   const {listingId} = useParams();
   const [files, setFiles] = useState([]);
+  const [stock, setStock] = useState(1); 
   const [formData, setFormData] = useState({
     name: '',
     brand: '',
@@ -29,6 +30,7 @@ export default function UpdateListing() {
     pickupDate: '',
     dropDate: '',
     imageUrls: [],
+    stock: 1,
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -49,6 +51,7 @@ export default function UpdateListing() {
         console.log('Fetched Data:', data);
         if (data.success) {
           setFormData(data.listing);
+          setStock(data.listing.stock);
         } else {
           setError('Error fetching listing data');
         }
@@ -130,10 +133,12 @@ export default function UpdateListing() {
 
   const handleUpdateListing = async (e) => {
     e.preventDefault();
-    console.log('FormData before update:', formData);
+    console.log('FormData before update:', { ...formData, stock });
     try {
       const token = localStorage.getItem('authToken');
-      const res = await axios.post(` https://rentandcapture-backend.onrender.com/api/listing/update/${listingId}`, formData, {
+      const res = await axios.post(`https://rentandcapture-backend.onrender.com/api/listing/update/${listingId}`, 
+      { ...formData, stock }, 
+      {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Include token in headers
@@ -154,8 +159,6 @@ export default function UpdateListing() {
       setLoading(false);
     }
   };
-  
-  
   
 
   return (
@@ -221,6 +224,13 @@ export default function UpdateListing() {
             onChange={handleChange}
             value={formData.price}
           />
+          
+          <input 
+          type="number" 
+          value={stock} 
+          onChange={(e) => setStock(e.target.value)} 
+          placeholder="Stock" 
+          required />  
           <div className='flex gap-6 flex-wrap'>
             <div className='flex gap-2'>
               <input

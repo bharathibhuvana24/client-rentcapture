@@ -1,16 +1,10 @@
-import React from 'react';
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage';
+import React, { useState } from 'react';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker'; // Make sure to install `react-datepicker` package
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function CreateListing() {
@@ -30,20 +24,19 @@ export default function CreateListing() {
     features: '',
     available: true,
     pickupDate: '',
-    dropDate: ''
+    dropDate: '',
+    stock: 1 // Add stock state
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log(formData);
 
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
       setImageUploadError(false);
       const promises = [];
-
       for (let i = 0; i < files.length; i++) {
         promises.push(storeImage(files[i]));
       }
@@ -98,8 +91,6 @@ export default function CreateListing() {
     });
   };
 
- 
-
   const handleChange = (e) => {
     const { id, value, checked, type } = e.target;
     setFormData((prevData) => ({
@@ -107,47 +98,36 @@ export default function CreateListing() {
       [id]: type === 'checkbox' ? checked : value,
     }));
   };
-  
 
-
-
-const handleUpdateListing = async (e) => {
-  e.preventDefault();
-  try {
-    if (formData.imageUrls.length < 1)
-      return setError('You must upload at least one image');
-    if (+formData.price < +formData.discountPrice)
-      return setError('Discount price must be lower than regular price');
-    setLoading(true);
-    setError(false);
-    const token = localStorage.getItem('authToken'); // Ensure token is included
-    const res = await axios.post(' https://rentandcapture-backend.onrender.com/api/listing/create', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // Include token in headers
-      },
-    });
-    const data = res.data;
-    if (!data.success) {
-      setError(data.message);
+  const handleCreateListing = async (e) => {
+    e.preventDefault();
+    try {
+      if (formData.imageUrls.length < 1)
+        return setError('You must upload at least one image');
+      if (+formData.price < +formData.discountPrice)
+        return setError('Discount price must be lower than regular price');
+      setLoading(true);
+      setError(false);
+      const token = localStorage.getItem('authToken'); // Ensure token is included
+      const res = await axios.post('https://rentandcapture-backend.onrender.com/api/listing/create', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include token in headers
+        },
+      });
+      const data = res.data;
+      if (!data.success) {
+        setError(data.message);
+        setLoading(false);
+        return;
+      }
+      console.log('Listing created successfully:', data.listing);
+      navigate(`/profile`);
+    } catch (error) {
       setLoading(false);
-      return;
+      setError(error.response ? error.response.data.message : error.message);
     }
-    console.log('Listing created successfully:', data.listing);
-    navigate(`/profile`); 
-  } catch (error) {
-    setLoading(false);
-    setError(error.response ? error.response.data.message : error.message);
-  }}
-
-  const handlePayment = async () => {
-    const res = await axios.post(' https://rentandcapture-backend.onrender.com/api/create-payment-intent', {
-      amount: formData.price * 100,
-    });
-    const { clientSecret } = res.data;
-    navigate('/checkout', { state: { clientSecret } });
   };
-
 
 return (
 <main className='p-3 max-w-4xl mx-auto'>
@@ -212,6 +192,12 @@ return (
         onChange={handleChange}
         value={formData.price}
       />
+      <input 
+      type="number" 
+      value={stock} 
+      onChange={(e) => setStock(e.target.value)} 
+      placeholder="Stock" 
+      required /> 
       <div className='flex gap-6 flex-wrap'>
         <div className='flex gap-2'>
           <input
