@@ -84,21 +84,31 @@ const Listing = () => {
       pickupDate: new Date(pickupDate).toISOString(),
       dropDate: new Date(dropDate).toISOString(),
       totalPrice,
-      quantity: 1
+      quantity: 1 // Assuming default quantity to be 1
     };
-
+  
     try {
       const res = await axios.post(`https://rentandcapture-backend.onrender.com/api/cart/add/${currentUser._id}`, item);
-      setShowPopup(true);
-      setTimeout(() => {
-        setShowPopup(false);
-        navigate('/cart');
-      }, 2000);
+      if (res.data.success) {
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          navigate('/cart');
+        }, 2000);
+      } else {
+        alert(res.data.message);
+      }
     } catch (error) {
       console.error('Error adding item to cart:', error);
     }
   };
-
+  
+  // Function to check if out of stock
+  const isOutOfStock = (quantity) => {
+    return listing.stock <= quantity;
+  };
+  
+  
   return (
     <main>
       {listing && (
